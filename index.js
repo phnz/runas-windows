@@ -2,25 +2,13 @@ var path = require('path'),
     bin = path.join(__dirname,'bin'),
     exec = require('child_process').exec;
 
-var params = function(options,callback) {
-  callback = callback || function(){};
-  options = options || {};
 
-  if (typeof options === 'function'){
-    callback = options;
-    options = {};
-  }
+module.exports = function(cmd, callback) {
 
-  if (typeof options !== 'object'){
-    throw 'Invalid options parameter.';
-  }
+  exec('"'+path.join(bin,'runas.cmd')+'" '+cmd, false, function(error) {
 
-  return {options:options, callback:callback};
-}
+      callback(error);
 
-module.exports = function(cmd, options, callback) {
-
-  var p = params(options,callback);
-  exec('"'+path.join(bin,'runas.cmd')+'" '+cmd, p.options, p.callback);
+  });
 
 }
